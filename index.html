@@ -54,7 +54,7 @@
       /// Game window size in pixels
       canvasMenu.width = canvasWidth;
       canvasMenu.height = canvasHeight;
-      contextMenu.drawImage(menuBackground, 0, 0,);
+      contextMenu.drawImage(menuBackground, 0, 0);
       
       /// Game window size in pixels
       canvasGame.width = canvasWidth;
@@ -172,7 +172,7 @@
       menuDraw : function() {
         contextMenu.clearRect(0, 0, canvasWidth, canvasHeight);
 
-        contextMenu.drawImage(menuBackground, 0, 0,);
+        contextMenu.drawImage(menuBackground, 0, 0);
 
         //debugStats(contextMenu);
       },
@@ -473,7 +473,12 @@
       
       this.draw = function(){
         /// Draw self
-        contextGame.fillStyle = "blue";
+        if (GameController.currentMusicTimestamp >= 0)
+          contextGame.fillStyle = "#26ff3f";
+        if (GameController.currentMusicTimestamp >= 64.3)
+          contextGame.fillStyle = "#f9e531";
+        if (GameController.currentMusicTimestamp >= 113.8)
+          contextGame.fillStyle = "#ff2121";
         contextGame.fillRect(this.x, this.y, this.width + GameController.screenShakeX, this.height + GameController.screenShakeY);
         contextGame.font = "32px Arial";
         contextGame.fillStyle = "black";
