@@ -25,6 +25,8 @@
       audio.currentTime = 46;
       setTimeout(function(){LetterBlockObjects = []}, 300);
     }
+
+
     
     /// Get the html tag canvas.
     var canvasMenu = document.getElementById("canvasMenu");
@@ -51,7 +53,8 @@
 
     var backgroundImg = new Image();
     backgroundImg.src = "http://freedesignfile.com/upload/2016/10/Watercolor-Backgrounds-05.jpg";
-    
+  
+
     /// When the page is done loading, create the canvas and begin gameLoop.
     window.onload = function() {
       /// Game window size in pixels
@@ -258,6 +261,7 @@
 
         /// Update Music Time Stamp
         GameController.update();
+
 
         if (audio.ended) {
           gameBtnRestart.update();
