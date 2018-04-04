@@ -40,6 +40,9 @@
     var lastTime = Date.now();
     var deltaTime = 0;
 
+    var menuAudio = new Audio("Assets/Music/menuMusic.mp3");
+    menuAudio.loop = true;
+    menuAudio.play();
     var audio = new Audio("Assets/Music/music.mp3");
     //audio.play();
 
@@ -105,6 +108,7 @@
       currentScene = SceneController.gameLoop;
       canvasMenu.style["display"] = "none";
       canvasGame.style["display"] = "block";
+      menuAudio.pause();
       audio.play();
       SceneController.gameLoop();
     });
@@ -201,7 +205,13 @@
             if (Keyboard.CurrentKey === lbo.letter.charCodeAt(0)-65) {
               LetterBlockObjects.splice(i, 1);
 
-              GameController.score += 100;
+              if (BlockStrip.collision(lbo.y+lbo.height/2,0)) {
+                GameController.score += 100;
+                ScoreIndicatorObjects.push(new ScoreIndicator(lbo.x+lbo.width/2, lbo.y, "Perfect"));
+              } else {
+                GameController.score += 50;
+                ScoreIndicatorObjects.push(new ScoreIndicator(lbo.x+lbo.width/2, lbo.y, "Good"));
+              }
               GameController.scoreScale = 2;
               
               //console.log(Keyboard.CurrentKey);
@@ -214,6 +224,14 @@
             GameController.screenShakeTime = 0.2;
             GameController.misses ++;
             if (GameController.score > 0) GameController.score -= 50;
+          }
+        }
+
+        for (var i=0; i<ScoreIndicatorObjects.length; i++) {
+          var sco = ScoreIndicatorObjects[i];
+          sco.update();
+          if (sco.lifeTime <= 0) {
+            ScoreIndicatorObjects.splice(i, 1);
           }
         }
 
@@ -249,6 +267,11 @@
           lbo.draw();
         }
 
+        for (var i=0; i<ScoreIndicatorObjects.length; i++) {
+          var sco = ScoreIndicatorObjects[i];
+          sco.draw();
+        }
+
         ProgressBar.draw();
 
         if (gameIsPaused) {
@@ -278,6 +301,11 @@
           contextGame.fillText("Score = " + GameController.score, 50, canvasHeight/2+30);
           contextGame.fillText("Matches = " + (musicTime.length - GameController.misses) + "/" + musicTime.length, 50, canvasHeight/2+50);
         }
+
+        contextGame.textAlign="left";
+        contextGame.fillStyle="#fff";
+        contextGame.font="16px Calibri";
+        contextGame.fillText("[ESC] to pause game", 10, 20);
 
         //ProgressBar.draw();
 
@@ -362,6 +390,7 @@
     /// Objects
     //var randomBlockSpawnTime = parseInt(Math.random() * 3000); /// Random time of 1-5 seconds
     var LetterBlockObjects = [];
+    var ScoreIndicatorObjects = [];
     var Letters = ["A", "B", "C", "D", "E", "F", "G",
                    "H", "I", "J", "K", "L", "M", "N",
                    "O", "P", "Q", "R", "S", "T", "U",
@@ -450,6 +479,27 @@
       Mouse.leftClick = false;
     }
     
+
+    /// Score Indicator (i.e Perfect, Good)
+    function ScoreIndicator(x, y, txt){
+      this.x = x;
+      this.y = y;
+      this.txt = txt;
+
+      this.lifeTime = 0.4;
+
+      this.update = function(){
+        this.lifeTime -= 1*deltaTime;
+      }
+      this.draw = function() {
+        if (this.txt === "Perfect") contextGame.fillStyle="gold"; else contextGame.fillStyle="lime";
+        contextGame.textAlign="center";
+        contextGame.font="bold 24px Calibri"
+        contextGame.fillText(txt, x, y);
+        contextGame.font="20px Arial";
+        contextGame.textAlign="left";
+      }
+    }
     
     
     /// Letter block constructor.
@@ -495,9 +545,9 @@
     
     var BlockStrip = {
       x : 0,
-      y : 400-100,//canvas.height - 100,
+      y : canvasHeight-100,//canvas.height - 100,
       width : canvasWidth*2,
-      height : 15,
+      height : 12,
       col : "white",
       
       update : function() {
