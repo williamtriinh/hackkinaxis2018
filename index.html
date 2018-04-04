@@ -113,6 +113,26 @@
       SceneController.gameLoop();
     });
 
+    var gameBtnResume = new Buttons(canvasWidth/2-50, canvasHeight-100, 100, 25, "Resume", contextGame, function(){
+      gameIsPaused = false;
+      audio.play();
+    });
+
+    var gameBtnMenu = new Buttons(canvasWidth/2-50, canvasHeight-60, 100, 25, "Menu", contextGame, function(){
+      currentScene = SceneController.menuLoop;
+      canvasMenu.style["display"] = "block";
+      canvasGame.style["display"] = "none";
+      musicTimeIndex = 0;
+      LetterBlockObjects = [];
+      audio.pause();
+      menuAudio.currentTime = 0;
+      menuAudio.play();
+      GameController.score = 0;
+      GameController.misses = 0;
+      GameController.currentMusicTimestamp = 0;
+      SceneController.menuLoop();
+    });
+
     var gameBtnRestart = new Buttons(canvasWidth/2-50, canvasHeight-100, 100, 25, "Restart", contextGame, function(){
       for (var i=0; i<musicTime.length; i++) {
         musicTime[i][1] = false;
@@ -239,7 +259,15 @@
         /// Update Music Time Stamp
         GameController.update();
 
-        if (audio.ended) gameBtnRestart.update();
+        if (audio.ended) {
+          gameBtnRestart.update();
+          gameBtnMenu.update();
+        }
+
+        if (gameIsPaused) {
+          gameBtnResume.update();
+          gameBtnMenu.update();
+        }
 
         MouseEvents();
 
@@ -288,6 +316,7 @@
           contextGame.textAlign = "left";
         }
 
+        /// Game end
         if (audio.ended) {
           contextGame.fillStyle = "rgba(0, 0, 0, 0.8)";
           contextGame.fillRect(0, 0, canvasWidth, canvasHeight);

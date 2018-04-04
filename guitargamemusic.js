@@ -52,7 +52,7 @@ var musicTime = [
 	[113.8-s,false], [114.4-s,false], [115.38-s,false], [116.25-s,false], [116.60-s,false], [117.35-s,false], [117.85-s,false], [118.2-s,false],
 	[118.6-s,false], [119.8-s,false], [120.6-s,false], [121-s,false], [122.2-s,false], [122.64-s,false], [123-s,false], [123.6-s,false],
 	[123.7-s,false], [124.22-s,false], [124.6-s,false], [125-s,false], [126.18-s,false], [127-s,false], [128.2-s,false], [129-s,false],
-	[129.3-s,false], [130.2-s,false], [130.6-s,false], [131.4-s,false], [132.2-s,false], [132.6-s,false], [133.2-s,false], [133.45-s,false],
+	[130.2-s,false], [131.4-s,false], [132.2-s,false], [132.6-s,false], [133.2-s,false], [133.45-s,false],
 	[133.8-s,false], [134.6-s,false], [135.4-s,false], [135.83-s,false], [136.6-s,false], [137.38-s,false], [137.8-s,false], [138.8-s,false],
 	[139-s,false], [139.9-s,false], [140.29-s,false],
 
